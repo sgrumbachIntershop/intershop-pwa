@@ -81,6 +81,7 @@ export class OrganizationManagementFacade {
   }
 
   // private initialize = once(() => this.store.dispatch(loadGroups()));
+
   groups$(): Observable<NodeTree> {
     return this.customer$.pipe(
       whenTruthy(),
