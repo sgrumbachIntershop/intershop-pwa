@@ -6,6 +6,7 @@ import { MockComponent } from 'ng-mocks';
 import { EMPTY, noop, of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { createCategoryView } from 'ish-core/models/category-view/category-view.model';
@@ -39,13 +40,16 @@ describe('Product Page Component', () => {
   let element: HTMLElement;
   let location: Location;
   let shoppingFacade: ShoppingFacade;
+  let context: ProductContextFacade;
 
   const categories = categoryTree([{ uniqueId: 'A', categoryPath: ['A'] } as Category]);
 
   beforeEach(async () => {
     shoppingFacade = mock(ShoppingFacade);
-    when(shoppingFacade.selectedProduct$).thenReturn(EMPTY);
     when(shoppingFacade.selectedCategory$).thenReturn(of(createCategoryView(categories, 'A')));
+
+    context = mock(ProductContextFacade);
+    when(context.select('product')).thenReturn(EMPTY);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -64,7 +68,11 @@ describe('Product Page Component', () => {
         ProductPageComponent,
       ],
       providers: [{ provide: ShoppingFacade, useFactory: () => instance(shoppingFacade) }],
-    }).compileComponents();
+    })
+      .overrideComponent(ProductPageComponent, {
+        set: { providers: [{ provide: ProductContextFacade, useFactory: () => instance(context) }] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -82,7 +90,7 @@ describe('Product Page Component', () => {
   });
 
   it('should display loading when product is loading', () => {
-    when(shoppingFacade.productDetailLoading$).thenReturn(of(true));
+    when(context.select('loading')).thenReturn(of(true));
 
     fixture.detectChanges();
 
@@ -91,7 +99,7 @@ describe('Product Page Component', () => {
 
   it('should display product-detail when product is available', () => {
     const product = { sku: 'dummy', completenessLevel: ProductCompletenessLevel.Detail } as Product;
-    when(shoppingFacade.selectedProduct$).thenReturn(of(createProductView(product, categories)));
+    when(context.select('product')).thenReturn(of(createProductView(product, categories)));
 
     fixture.detectChanges();
 
@@ -159,7 +167,7 @@ describe('Product Page Component', () => {
     } as VariationProduct;
 
     beforeEach(() => {
-      when(shoppingFacade.selectedProduct$).thenReturn(
+      when(context.select('product')).thenReturn(
         of(createVariationProductMasterView(product, { 111: variation1, 222: variation2 }, categories))
       );
       TestBed.inject(Router).navigateByUrl('/product/M111');
@@ -188,7 +196,7 @@ describe('Product Page Component', () => {
       partSKUs: ['A', 'B', 'C'],
       type: 'RetailSet',
     } as ProductRetailSet;
-    when(shoppingFacade.selectedProduct$).thenReturn(of(createProductView(product, categories)));
+    when(context.select('product')).thenReturn(of(createProductView(product, categories)));
 
     fixture.detectChanges();
 
