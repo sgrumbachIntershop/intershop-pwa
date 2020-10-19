@@ -2,9 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent, MockDirective } from 'ng-mocks';
+import { LazyBudgetWidgetComponent } from 'organization-management';
+import { LazyApprovalWidgetComponent, LazyRequisitionWidgetComponent } from 'requisition-management';
+import { instance, mock } from 'ts-mockito';
 
 import { FeatureToggleDirective } from 'ish-core/directives/feature-toggle.directive';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { OrderWidgetComponent } from 'ish-shared/components/order/order-widget/order-widget.component';
@@ -19,21 +23,28 @@ describe('Account Overview Component', () => {
   let component: AccountOverviewComponent;
   let element: HTMLElement;
   let translate: TranslateService;
+  let appFacade: AppFacade;
+
   const user = { firstName: 'Patricia' } as User;
   const customer = { isBusinessCustomer: false } as Customer;
 
   beforeEach(async () => {
+    appFacade = mock(AppFacade);
     await TestBed.configureTestingModule({
       declarations: [
         AccountOverviewComponent,
         MockComponent(FaIconComponent),
+        MockComponent(LazyApprovalWidgetComponent),
+        MockComponent(LazyBudgetWidgetComponent),
         MockComponent(LazyQuoteWidgetComponent),
+        MockComponent(LazyRequisitionWidgetComponent),
         MockComponent(OrderWidgetComponent),
         MockDirective(FeatureToggleDirective),
         MockDirective(LazyWishlistWidgetComponent),
         MockDirective(ServerHtmlDirective),
       ],
       imports: [TranslateModule.forRoot()],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   });
 

@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 
@@ -14,7 +16,15 @@ import { User } from 'ish-core/models/user/user.model';
   templateUrl: './account-overview.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountOverviewComponent {
+export class AccountOverviewComponent implements OnInit {
   @Input() user: User;
   @Input() customer: Customer;
+
+  isOrderApprovalEnabled$: Observable<boolean>;
+
+  constructor(private appFacade: AppFacade) {}
+
+  ngOnInit() {
+    this.isOrderApprovalEnabled$ = this.appFacade.orderApprovalEnabled$;
+  }
 }

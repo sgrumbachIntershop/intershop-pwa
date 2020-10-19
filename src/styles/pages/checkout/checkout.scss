@@ -94,6 +94,20 @@
         padding-left: $space-default * 2;
       }
     }
+
+    &.infobox-gradient {
+      font-size: 14px;
+      color: $text-color-inverse;
+      background-image: linear-gradient(to right, #1cb4bc 0, #05c4f6 100%);
+      h3,
+      a {
+        color: $text-color-inverse;
+      }
+      .infobox-count {
+        font-size: 36px;
+        color: $text-color-inverse;
+      }
+    }
   }
 }
 

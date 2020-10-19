@@ -11,6 +11,7 @@ import { UserBudgets } from '../models/user-budgets/user-budgets.model';
 import {
   addUser,
   deleteUser,
+  getLoggedInB2bUser,
   getRole,
   getRoles,
   getSelectedUser,
@@ -18,6 +19,7 @@ import {
   getUsers,
   getUsersError,
   getUsersLoading,
+  loadUsers,
   setUserBudgets,
   setUserRoles,
   updateUser,
@@ -32,6 +34,11 @@ export class OrganizationManagementFacade {
   usersLoading$ = this.store.pipe(select(getUsersLoading));
   selectedUser$ = this.store.pipe(select(getSelectedUser));
   users$ = this.store.pipe(select(getUsers));
+
+  loggedInUser$() {
+    this.store.dispatch(loadUsers());
+    return this.store.pipe(select(getLoggedInB2bUser));
+  }
 
   addUser(user: B2bUser) {
     this.store.dispatch(

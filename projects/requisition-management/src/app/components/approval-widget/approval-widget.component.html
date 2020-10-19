@@ -1,0 +1,33 @@
+<ish-info-box heading="account.requisitions.widget.approvals_title" class="infobox-wrapper" cssClass="infobox-gradient">
+  <div class="loading-container">
+    <div *ngIf="!(requisitionsLoading$ | async); else loading">
+      <div class="row">
+        <div class="col">
+          <div class="infobox-count" data-testing-id="pending-counter">
+            {{ numPendingApprovals$ | async }}
+          </div>
+          {{ 'account.requisitions.widget.pending' | translate }}
+        </div>
+        <div class="col d-flex align-items-end justify-content-end">
+          <div class="text-right">
+            {{ 'account.requisitions.widget.order_total' | translate }}
+            <div data-testing-id="pending-amount-sum">
+              {{ totalAmountApprovals$ | async | ishPrice }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col my-2">
+          <a routerLink="/account/requisitions/buyer">
+            {{ 'account.requisitions.widget.view_all_approvals' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+    <ng-template #loading>
+      <ish-loading></ish-loading>
+    </ng-template>
+  </div>
+</ish-info-box>

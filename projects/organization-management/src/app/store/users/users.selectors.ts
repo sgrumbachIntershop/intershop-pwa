@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { selectRouteParam } from 'ish-core/store/core/router';
+import { getLoggedInUser } from 'ish-core/store/customer/user';
 
 import { getOrganizationManagementState } from '../organization-management-store';
 
@@ -22,6 +23,12 @@ export const getSelectedUser = createSelector(
   selectRouteParam('B2BCustomerLogin'),
   selectEntities,
   (login, users) => users[login]
+);
+
+export const getLoggedInB2bUser = createSelector(
+  getLoggedInUser,
+  selectEntities,
+  (loggedInUser, users) => users[loggedInUser.email]
 );
 
 export const getSystemUserRoles = createSelector(getUsersState, state => state.roles);

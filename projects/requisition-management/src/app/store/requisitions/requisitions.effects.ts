@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { concatMap, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 import { ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { loadProductIfNotLoaded } from 'ish-core/store/shopping/products';
@@ -29,9 +29,9 @@ export class RequisitionsEffects {
     this.actions$.pipe(
       ofType(loadRequisitions),
       mapToPayload(),
-      switchMap(({ view, status }) =>
+      mergeMap(({ view, status }) =>
         this.requisitionsService.getRequisitions(view, status).pipe(
-          map(requisitions => loadRequisitionsSuccess({ requisitions })),
+          map(requisitions => loadRequisitionsSuccess({ requisitions, requestInfo: { view, status } })),
           mapErrorToAction(loadRequisitionsFail)
         )
       )

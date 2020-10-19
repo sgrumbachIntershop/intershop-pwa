@@ -6,51 +6,62 @@
     "
     data-testing-id="personal-message-b2b"
   ></h1>
+
+  <p>{{ 'account.overview.message.text' | translate }}</p>
+
+  <div *ngIf="isOrderApprovalEnabled$ | async">
+    <div class="row d-flex">
+      <div class="col-md-6"><ish-lazy-budget-widget></ish-lazy-budget-widget></div>
+      <div class="col-md-6"><ish-lazy-requisition-widget></ish-lazy-requisition-widget></div>
+    </div>
+    <div class="row d-flex">
+      <div class="col-md-6"><ish-lazy-approval-widget> </ish-lazy-approval-widget></div>
+      <!-- Quote Widget - displays different quote states if quoting is enabled -->
+      <div class="col-md-6"><ish-lazy-quote-widget></ish-lazy-quote-widget></div>
+    </div>
+  </div>
 </ng-container>
 <ng-template #personalCustomerMessage>
   <h1
     [innerHTML]="'account.overview.personal_message.text' | translate: { '0': user.firstName }"
     data-testing-id="personal-message-default"
   ></h1>
+
+  <p>{{ 'account.overview.message.text' | translate }}</p>
+
+  <div class="row account-dashboard">
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/orders">
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']"></fa-icon></div>
+        {{ 'account.order_history.link' | translate }}
+      </a>
+    </div>
+    <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/wishlists">
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'heart']"></fa-icon></div>
+        {{ 'account.wishlists.link' | translate }}
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/addresses">
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']"></fa-icon></div>
+        {{ 'account.saved_addresses.link' | translate }}
+      </a>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 dashboard-item">
+      <a routerLink="/account/profile">
+        <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']"></fa-icon></div>
+        {{ 'account.profile.link' | translate }}
+      </a>
+    </div>
+  </div>
 </ng-template>
-
-<p>{{ 'account.overview.message.text' | translate }}</p>
-
-<div class="row account-dashboard">
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/orders">
-      <div class="circle-icon"><fa-icon [icon]="['fas', 'list-alt']"></fa-icon></div>
-      {{ 'account.order_history.link' | translate }}
-    </a>
-  </div>
-  <div *ishFeature="'wishlists'" class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/wishlists">
-      <div class="circle-icon"><fa-icon [icon]="['fas', 'heart']"></fa-icon></div>
-      {{ 'account.wishlists.link' | translate }}
-    </a>
-  </div>
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/addresses">
-      <div class="circle-icon"><fa-icon [icon]="['fas', 'address-book']"></fa-icon></div>
-      {{ 'account.saved_addresses.link' | translate }}
-    </a>
-  </div>
-  <div class="col-6 col-sm-4 col-md-3 dashboard-item">
-    <a routerLink="/account/profile">
-      <div class="circle-icon"><fa-icon [icon]="['fas', 'cog']"></fa-icon></div>
-      {{ 'account.profile.link' | translate }}
-    </a>
-  </div>
-</div>
 
 <!-- Order Widget - displays latest orders as list -->
 <ish-order-widget></ish-order-widget>
 
 <!-- Wishlist Widget - displays all unique items from all wishlists (if wishlists feature is enabled) -->
 <ish-lazy-wishlist-widget></ish-lazy-wishlist-widget>
-
-<!-- Quote Widget - displays different quote states if quoting is enabled -->
-<ish-lazy-quote-widget></ish-lazy-quote-widget>
 
 <p class="form-text">
   {{ 'account.overview.note.heading' | translate }}:

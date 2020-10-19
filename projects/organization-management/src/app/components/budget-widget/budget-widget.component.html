@@ -1,0 +1,22 @@
+<ish-info-box heading="account.requisitions.widget.budget_title" class="infobox-wrapper">
+  <div class="loading-container">
+    <div *ngIf="!(usersLoading$ | async); else loading">
+      <div class="row">
+        <div class="col">
+          <ish-user-budget [budget]="requisitionUserBudgets$ | async"></ish-user-budget>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <a routerLink="/account/organization/users">
+            {{ 'account.requisitions.widget.view_all_budgets' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #loading>
+      <ish-loading></ish-loading>
+    </ng-template>
+  </div>
+</ish-info-box>
