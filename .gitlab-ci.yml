@@ -393,7 +393,7 @@ deploy_review_b2c:
   script:
     - set -x
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-    - export ICM_BASE_URL=https://jpwademo.rnd.j.ad.intershop.net
+    - export ICM_BASE_URL=https://pwa-public-demo.test.intershop.com
     - ICM_HOST=$(expr match "$ICM_BASE_URL" '.*://\([^:]*\).*')
     - ICM_IP=$(dig ${DNS_SERVER} +short $ICM_HOST | tail -n 1)
     - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2c")
@@ -478,7 +478,7 @@ deploy_review_b2b:
   script:
     - set -x
     - DEMO_SERVER_IP=$(dig ${DNS_SERVER} +short $DEMO_SERVER_NAME)
-    - export ICM_BASE_URL=https://jpwademo.rnd.j.ad.intershop.net
+    - export ICM_BASE_URL=https://pwa-public-demo.test.intershop.com
     - ICM_HOST=$(expr match "$ICM_BASE_URL" '.*://\([^:]*\).*')
     - ICM_IP=$(dig ${DNS_SERVER} +short $ICM_HOST | tail -n 1)
     - PUBLISH_PWA=$(sh .gitlab-ci-get-publish.sh "${CI_COMMIT_REF_SLUG}-pwa-b2b")
