@@ -31,6 +31,7 @@ import {
   getProduct,
   getProductBundleParts,
   getProductLinks,
+  getProductVariationCount,
   getProductVariationOptions,
   getProducts,
   getSelectedProduct,
@@ -95,6 +96,12 @@ export class ShoppingFacade {
   productVariationOptions$(sku: string | Observable<string>) {
     return toObservable(sku).pipe(
       switchMap(plainSKU => this.store.pipe(select(getProductVariationOptions, { sku: plainSKU })))
+    );
+  }
+
+  productVariationCount$(sku: string) {
+    return toObservable(sku).pipe(
+      switchMap(plainSKU => this.store.pipe(select(getProductVariationCount, { sku: plainSKU })))
     );
   }
 
