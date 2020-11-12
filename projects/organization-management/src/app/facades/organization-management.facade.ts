@@ -92,11 +92,6 @@ export class OrganizationManagementFacade {
   }
 
   createAndAddGroup(parent: Node, child: Node) {
-    this.store.dispatch(
-      createGroup({
-        parent,
-        child,
-      })
-    );
+    this.store.dispatch(createGroup({ parent, child }));
   }
 }
