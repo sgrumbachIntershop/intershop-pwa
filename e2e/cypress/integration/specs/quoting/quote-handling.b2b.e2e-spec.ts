@@ -36,8 +36,8 @@ describe('Quote Handling', () => {
 
   it('should check number of quotes', () => {
     at(MyAccountPage, page => {
-      page.submittedQuotesCount.should('have.text', '0');
-      page.respondedQuotesCount.should('have.text', '0');
+      page.submittedQuotesCount.should('have.text', ' 0 ');
+      page.respondedQuotesCount.should('have.text', ' 0 ');
     });
   });
 
@@ -118,7 +118,7 @@ describe('Quote Handling', () => {
   it('should check number of quotes again', () => {
     at(FamilyPage, page => page.header.goToMyAccount());
     at(MyAccountPage, page => {
-      page.submittedQuotesCount.should('have.text', '1');
+      page.submittedQuotesCount.should('have.text', ' 1 ');
     });
   });
 });
