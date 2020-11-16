@@ -10,7 +10,7 @@ export class MyAccountPage {
   }
 
   navigateToQuoting() {
-    cy.get('a[data-testing-id="quoute-list-link"]').click();
+    cy.get('a[data-testing-id="quote-list-link"]').click();
   }
 
   get respondedQuotesCount() {
