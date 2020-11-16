@@ -54,14 +54,14 @@
             <div class="d-flex align-items-center">
               <ish-lazy-product-add-to-order-template
                 *ngIf="editable"
-                [class]="'btn btn-link btn-tool add-to-order-template'"
+                [class]="'btn-link btn-tool pl-0 pt-2 add-to-order-template'"
                 [product]="product"
                 displayType="icon"
                 [quantity]="pli.quantity.value"
               ></ish-lazy-product-add-to-order-template>
               <ish-lazy-product-add-to-wishlist
                 *ngIf="editable"
-                class="btn-tool ml-0"
+                [class]="'btn-link btn-tool pl-0 pt-1'"
                 [product]="product"
                 displayType="icon"
               ></ish-lazy-product-add-to-wishlist>
