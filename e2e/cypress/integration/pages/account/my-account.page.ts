@@ -13,20 +13,12 @@ export class MyAccountPage {
     cy.get('a[data-testing-id="quoute-list-link"]').click();
   }
 
-  get newQuoteLabel() {
-    return cy.get('[data-testing-id="new-counter"]');
+  get respondedQuotesCount() {
+    return cy.get('[data-testing-id="responded-counter"]');
   }
 
-  get submittedQuoteLabel() {
+  get submittedQuotesCount() {
     return cy.get('[data-testing-id="submitted-counter"]');
-  }
-
-  get acceptedQuoteLabel() {
-    return cy.get('[data-testing-id="accepted-counter"]');
-  }
-
-  get rejectedQuoteLabel() {
-    return cy.get('[data-testing-id="rejected-counter"]');
   }
 
   navigateToAddresses() {
