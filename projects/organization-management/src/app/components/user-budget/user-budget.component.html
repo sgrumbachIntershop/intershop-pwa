@@ -15,7 +15,7 @@
       <dd class="col-5 column-price">{{ budget.budget | ishPrice }}</dd>
     </dl>
     <div [ngbPopover]="BudgetPopover" placement="top" data-testing-id="user-budget-popover">
-      <div class="progress">
+      <div class="progress" [ngStyle]="{ 'background-color': barBackground }">
         <div
           class="progress-bar"
           [ngClass]="{ 'bg-danger': usedBudgetPercentage * 100 > 90 }"

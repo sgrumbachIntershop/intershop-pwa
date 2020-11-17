@@ -95,8 +95,7 @@
       }
     }
 
-    &.infobox-widget {
-      height: 100%;
+    &.infobox-color-widget {
       padding-bottom: 15px;
       font-size: 14px;
       color: $text-color-inverse;
@@ -119,6 +118,14 @@
         font-size: 60px;
         line-height: 1;
       }
+      .row:last-of-type {
+        margin-top: 0.5rem;
+      }
+    }
+
+    &.infobox-widget {
+      padding-bottom: 15px;
+
       .row:last-of-type {
         margin-top: 0.5rem;
       }

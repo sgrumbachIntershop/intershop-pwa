@@ -14,6 +14,7 @@ import { UserBudgets } from '../../models/user-budgets/user-budgets.model';
 })
 export class UserBudgetComponent implements OnChanges {
   @Input() budget: UserBudgets;
+  @Input() barBackground = '#e9ecef';
 
   usedBudget: Price;
   usedBudgetPercentage: number;
