@@ -1,46 +1,13 @@
-<div *ngIf="product.inStock && product.availability" [formGroup]="parentForm" class="product-quantity">
-  <ng-container *ngIf="!readOnly">
-    <ng-container [ngSwitch]="type">
-      <ish-select
-        *ngSwitchCase="'select'"
-        [options]="quantityOptions"
-        [form]="parentForm"
-        [controlName]="controlName"
-        [label]="quantityLabel"
-        [labelClass]="labelClass"
-        [inputClass]="inputClass"
-      ></ish-select>
-      <ish-counter
-        *ngSwitchCase="'counter'"
-        [form]="parentForm"
-        [controlName]="controlName"
-        [label]="quantityLabel"
-        [labelClass]="labelClass"
-        [inputClass]="inputClass"
-        [min]="allowZeroQuantity ? 0 : product.minOrderQuantity"
-        [max]="product.maxOrderQuantity"
-      ></ish-counter>
-      <ish-input
-        *ngSwitchDefault
-        [type]="'number'"
-        [form]="parentForm"
-        [controlName]="controlName"
-        [label]="quantityLabel"
-        [labelClass]="labelClass"
-        [inputClass]="inputClass"
-        [markRequiredLabel]="'off'"
-        [min]="allowZeroQuantity ? 0 : product.minOrderQuantity"
-        [max]="product.maxOrderQuantity"
-        [errorMessages]="{
-          required: 'product.quantity.notempty.text',
-          integer: 'product.quantity.integer.text',
-          min: 'product.quantity.greaterthan.text' | translate: { '0': product.minOrderQuantity },
-          max: 'product.quantity.lessthan.text' | translate: { '0': product.maxOrderQuantity }
-        }"
-      ></ish-input>
-    </ng-container>
-  </ng-container>
-  <ng-container *ngIf="readOnly">
-    <span>{{ quantityLabel | translate }}: {{ quantity }}</span>
-  </ng-container>
+<div *ngIf="product$ | async as product" [ngClass]="{'has-error': hasQuantityError$ | async}">
+  <input
+    class="form-control"
+    [id]="id"
+    type="number"
+    [value]="quantity$ | async"
+    [min]="product.minOrderQuantity"
+    [max]="product.maxOrderQuantity"
+    (change)="change($event.target)"
+    (keyup)="change($event.target)"
+  />
+  <small *ngIf="hasQuantityError$ | async" class="form-text">{{ quantityError$ | async }}</small>
 </div>

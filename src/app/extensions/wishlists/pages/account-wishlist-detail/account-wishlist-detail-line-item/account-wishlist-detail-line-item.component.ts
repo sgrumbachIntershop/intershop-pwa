@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
@@ -17,37 +16,21 @@ import { Wishlist, WishlistItem } from '../../../models/wishlist/wishlist.model'
   templateUrl: './account-wishlist-detail-line-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountWishlistDetailLineItemComponent implements OnInit, OnChanges {
+export class AccountWishlistDetailLineItemComponent implements OnChanges {
   constructor(private productFacade: ShoppingFacade, private wishlistsFacade: WishlistsFacade) {}
 
   private static REQUIRED_COMPLETENESS_LEVEL = ProductCompletenessLevel.List;
   @Input() wishlistItemData: WishlistItem;
   @Input() currentWishlist: Wishlist;
 
-  addToCartForm: FormGroup;
   product$: Observable<ProductView>;
 
   isVariationProduct = ProductHelper.isVariationProduct;
-
-  ngOnInit() {
-    this.initForm();
-  }
 
   ngOnChanges(s: SimpleChanges) {
     if (s.wishlistItemData) {
       this.loadProductDetails();
     }
-  }
-
-  /** init form in the beginning */
-  private initForm() {
-    this.addToCartForm = new FormGroup({
-      quantity: new FormControl(1),
-    });
-  }
-
-  addToCart(sku: string) {
-    this.productFacade.addProductToBasket(sku, Number(this.addToCartForm.get('quantity').value));
   }
 
   moveItemToOtherWishlist(sku: string, wishlistMoveData: { id: string; title: string }) {

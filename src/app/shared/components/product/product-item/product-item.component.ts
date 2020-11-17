@@ -83,12 +83,14 @@ export class ProductItemComponent implements OnInit, OnChanges {
     this.product$ = this.context.select('product');
     this.loading$ = this.context.select('loading');
 
+    this.context.hold(this.context.select('quantity'), quantity => this.quantityChange.next(quantity));
     this.context.hold(this.context.select('sku'), sku => this.productSkuChange.next(sku));
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.mergeConfiguration(changes);
 
+    this.context.set('quantity', () => this.quantity);
     this.context.set('sku', () => this.productSku);
   }
 
@@ -98,10 +100,6 @@ export class ProductItemComponent implements OnInit, OnChanges {
       // tslint:disable-next-line:no-assignement-to-inputs
       this.configuration = { ...DEFAULT_CONFIGURATION, ...oldConfig };
     }
-  }
-
-  addToBasket(quantity: number) {
-    this.context.addToBasket(quantity);
   }
 
   get isTile() {

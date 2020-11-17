@@ -1,6 +1,6 @@
 <ish-product-detail-actions></ish-product-detail-actions>
 
-<div class="row product-details">
+<div *ngIf="product$ | async as product" class="row product-details">
   <div class="col-12 col-md-6 col-lg-8"><ish-product-images [product]="product"></ish-product-images></div>
 
   <div class="col-12 col-md-6 col-lg-4">
@@ -64,40 +64,27 @@
       </ng-container>
 
       <ng-template #standardInteractions>
-        <form *ngIf="!isMasterProduct(product)" [formGroup]="productDetailForm" class="product-form form-horizontal">
-          <div class="row">
-            <div class="w-100">
-              <ish-product-quantity
-                *ngIf="!isRetailSet(product)"
-                [product]="product"
-                [parentForm]="productDetailForm"
-                [controlName]="quantityControlName"
-                [type]="'input'"
-              ></ish-product-quantity>
+        <ng-container *ngIf="!isMasterProduct(product) && product.inStock && product.availability">
+          <div *ngIf="!isRetailSet(product)" class="row form-group has-feedback">
+            <label for="product-detail-quantity" class="col-form-label label-quantity col-6">{{
+              'product.quantity.label' | translate
+            }}</label>
+            <div class="col-6">
+              <ish-product-quantity type="input" id="product-detail-quantity"></ish-product-quantity>
             </div>
           </div>
 
           <ish-product-add-to-basket
-            [product]="product"
             [class]="'btn-lg btn-block'"
-            [disabled]="productDetailForm.invalid"
             [translationKey]="isRetailSet(product) ? 'product.add_to_cart.retailset.link' : 'product.add_to_cart.link'"
-            (productToBasket)="addToBasket()"
           ></ish-product-add-to-basket>
 
           <ish-lazy-product-add-to-order-template
             [class]="'btn btn-default btn-block'"
-            [product]="product"
-            [quantity]="quantity"
           ></ish-lazy-product-add-to-order-template>
 
-          <ish-lazy-product-add-to-quote
-            [product]="product"
-            [disabled]="productDetailForm.invalid"
-            [quantity]="quantity"
-            [class]="'btn-block'"
-          ></ish-lazy-product-add-to-quote>
-        </form>
+          <ish-lazy-product-add-to-quote [class]="'btn-block'"></ish-lazy-product-add-to-quote>
+        </ng-container>
       </ng-template>
     </div>
 

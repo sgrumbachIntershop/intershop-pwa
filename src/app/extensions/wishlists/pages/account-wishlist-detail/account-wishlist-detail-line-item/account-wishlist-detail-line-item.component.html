@@ -48,23 +48,14 @@
           <ng-template #noInStock>
             <p>{{ 'account.wishlist.table.not_accessible' | translate }}</p>
           </ng-template>
-          <form [formGroup]="addToCartForm" class="row">
+          <div class="row">
             <div class="col-6 offset-md-6 col-lg-5 offset-lg-0">
-              <ish-product-quantity
-                [allowZeroQuantity]="false"
-                [quantityLabel]="''"
-                [product]="product"
-                [parentForm]="addToCartForm"
-                controlName="quantity"
-              ></ish-product-quantity>
+              <ish-product-quantity></ish-product-quantity>
             </div>
             <div class="col-12 col-lg-7 addtocart-container">
-              <ish-product-add-to-basket
-                [product]="product"
-                (productToBasket)="addToCart(product.sku)"
-              ></ish-product-add-to-basket>
+              <ish-product-add-to-basket></ish-product-add-to-basket>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

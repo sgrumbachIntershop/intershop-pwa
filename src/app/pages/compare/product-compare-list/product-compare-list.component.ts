@@ -6,6 +6,7 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { AttributeHelper } from 'ish-core/models/attribute/attribute.helper';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductCompletenessLevel, ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductItemContainerConfiguration } from 'ish-shared/components/product/product-item/product-item.component';
 
 /**
  * The Product Compare List Component
@@ -57,6 +58,13 @@ export class ProductCompareListComponent implements OnInit {
   getAttributeByAttributeName = AttributeHelper.getAttributeByAttributeName;
 
   getProductWithoutCommonAttributes = ProductHelper.getProductWithoutCommonAttributes;
+
+  configuration: Partial<ProductItemContainerConfiguration> = {
+    displayType: 'tile',
+    displayAddToCompare: false,
+    displayInventory: false,
+    displayPrice: false,
+  };
 
   constructor(private shoppingFacade: ShoppingFacade) {}
 

@@ -1,12 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { CategoryView } from 'ish-core/models/category-view/category-view.model';
-import {
-  ProductView,
-  VariationProductMasterView,
-  VariationProductView,
-} from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper } from 'ish-core/models/product/product.model';
+import { ProductView } from 'ish-core/models/product-view/product-view.model';
+import { AnyProductViewType, ProductHelper } from 'ish-core/models/product/product.model';
 
 export interface ProductTileComponentConfiguration {
   readOnly: boolean;
@@ -26,26 +24,22 @@ export interface ProductTileComponentConfiguration {
   templateUrl: './product-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductTileComponent {
+export class ProductTileComponent implements OnChanges {
   @Input() configuration: Partial<ProductTileComponentConfiguration> = {};
-  @Input() product: ProductView | VariationProductView | VariationProductMasterView;
-  @Input() quantity: number;
   @Input() category: CategoryView;
-  @Output() productToBasket = new EventEmitter<number>();
+
+  product$: Observable<AnyProductViewType>;
 
   isMasterProduct = ProductHelper.isMasterProduct;
   isVariationProduct = ProductHelper.isVariationProduct;
 
-  addToBasket() {
-    this.productToBasket.emit(this.quantity || this.product.minOrderQuantity);
+  constructor(private context: ProductContextFacade) {}
+
+  ngOnChanges() {
+    this.product$ = this.context.select('product');
   }
 
-  get variationCount() {
-    return (
-      this.product &&
-      ProductHelper.isMasterProduct(this.product) &&
-      this.product.variations() &&
-      this.product.variations().length
-    );
+  variationCount(product: ProductView) {
+    return product && ProductHelper.isMasterProduct(product) && product.variations() && product.variations().length;
   }
 }

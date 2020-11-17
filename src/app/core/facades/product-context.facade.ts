@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { RxState } from '@rx-angular/state';
+import { isEqual } from 'lodash-es';
 import { combineLatest } from 'rxjs';
-import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, first, map, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { ProductVariationHelper } from 'ish-core/models/product-variation/product-variation.helper';
 import { VariationProductView } from 'ish-core/models/product-view/product-view.model';
@@ -20,8 +22,11 @@ export class ProductContextFacade extends RxState<{
   productAsVariationProduct: VariationProductView;
   loading: boolean;
   isInCompareList: boolean;
+  quantity: number;
+  quantityError: string;
+  hasQuantityError: boolean;
 }> {
-  constructor(private store: Store) {
+  constructor(private store: Store, private translate: TranslateService) {
     super();
 
     this.set('requiredCompletenessLevel', () => ProductCompletenessLevel.List);
@@ -51,6 +56,38 @@ export class ProductContextFacade extends RxState<{
       this.select('sku').pipe(switchMap(sku => this.store.pipe(select(isInCompareProducts(sku)))))
     );
 
+    this.connect(
+      combineLatest([this.select('product'), this.select('quantity').pipe(distinctUntilChanged())]).pipe(
+        map(([product, quantity]) => {
+          if (product) {
+            if (Number.isNaN(quantity)) {
+              return this.translate.instant('product.quantity.integer.text');
+            } else if (quantity < product.minOrderQuantity) {
+              return this.translate.instant('product.quantity.greaterthan.text', { 0: product.minOrderQuantity });
+            } else if (quantity > product.maxOrderQuantity) {
+              return this.translate.instant('product.quantity.lessthan.text', { 0: product.maxOrderQuantity });
+            }
+          }
+          return;
+        }),
+        map(quantityError => ({
+          quantityError,
+          hasQuantityError: !!quantityError,
+        })),
+        distinctUntilChanged(isEqual)
+      )
+    );
+
+    this.connect(
+      'quantity',
+      this.select('product').pipe(
+        whenTruthy(),
+        map(p => p.minOrderQuantity),
+        first()
+      ),
+      (state, minOrderQuantity) => (state.quantity ??= minOrderQuantity)
+    );
+
     // tslint:disable-next-line: no-console
     this.hold(this.$, ctx => console.log(ctx));
   }
@@ -61,8 +98,8 @@ export class ProductContextFacade extends RxState<{
     );
   }
 
-  addToBasket(quantity: number) {
-    this.store.dispatch(addProductToBasket({ sku: this.get('sku'), quantity }));
+  addToBasket() {
+    this.store.dispatch(addProductToBasket({ sku: this.get('sku'), quantity: this.get('quantity') }));
   }
 
   toggleCompare() {

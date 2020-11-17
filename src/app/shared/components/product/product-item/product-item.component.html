@@ -1,19 +1,13 @@
-<ng-container *ngIf="product$ | async as product">
+<ng-container *ngIf="product$ | async">
   <ish-product-tile
     *ngIf="isTile"
     [configuration]="configuration"
-    [product]="product"
-    [quantity]="quantity"
     [category]="category"
-    (productToBasket)="addToBasket($event)"
   ></ish-product-tile>
 
   <ish-product-row
     *ngIf="isRow"
     [configuration]="configuration"
-    [product]="product"
-    [quantity]="quantity"
-    (quantityChange)="quantityChange.emit($event)"
     [category]="category"
   ></ish-product-row>
 </ng-container>

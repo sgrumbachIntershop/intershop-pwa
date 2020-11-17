@@ -1,55 +1,26 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import {
-  ProductView,
-  VariationProductMasterView,
-  VariationProductView,
-} from 'ish-core/models/product-view/product-view.model';
-import { ProductHelper, ProductPrices } from 'ish-core/models/product/product.model';
+import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
+import { AnyProductViewType, ProductHelper, ProductPrices } from 'ish-core/models/product/product.model';
 
 @Component({
   selector: 'ish-product-detail',
   templateUrl: './product-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductDetailComponent implements OnInit, OnDestroy {
-  @Input() product: ProductView | VariationProductView | VariationProductMasterView;
-  @Input() quantity: number;
+export class ProductDetailComponent implements OnInit {
   @Input() price: ProductPrices;
-  @Output() productToBasket = new EventEmitter<{ sku: string; quantity: number }>();
-  @Output() quantityChange = new EventEmitter<number>();
 
-  productDetailForm: FormGroup;
-  readonly quantityControlName = 'quantity';
+  product$: Observable<AnyProductViewType>;
 
   isVariationProduct = ProductHelper.isVariationProduct;
   isMasterProduct = ProductHelper.isMasterProduct;
   isRetailSet = ProductHelper.isRetailSet;
 
-  private destroy$ = new Subject();
+  constructor(private context: ProductContextFacade) {}
 
   ngOnInit() {
-    this.productDetailForm = new FormGroup({
-      [this.quantityControlName]: new FormControl(this.quantity || this.product.minOrderQuantity),
-    });
-    this.productDetailForm
-      .get(this.quantityControlName)
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(this.quantityChange);
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  addToBasket() {
-    this.productToBasket.emit({
-      sku: this.product.sku,
-      quantity: this.productDetailForm.get(this.quantityControlName).value,
-    });
+    this.product$ = this.context.select('product');
   }
 }
