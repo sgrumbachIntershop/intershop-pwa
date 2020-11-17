@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
@@ -18,8 +17,4 @@ import { User } from 'ish-core/models/user/user.model';
 export class AccountOverviewComponent {
   @Input() user: User;
   @Input() customer: Customer;
-
-  isOrderApprovalEnabled$: Observable<boolean>;
-
-  constructor() {}
 }

@@ -95,17 +95,32 @@
       }
     }
 
-    &.infobox-gradient {
+    &.infobox-widget {
+      height: 100%;
+      padding-bottom: 15px;
       font-size: 14px;
       color: $text-color-inverse;
-      background-image: linear-gradient(to right, #1cb4bc 0, #05c4f6 100%);
-      h3,
+      text-transform: uppercase;
+      background: $CORPORATE-PRIMARY;
+      h3 {
+        font-size: 1.09375rem;
+        color: $text-color-inverse;
+      }
       a {
         color: $text-color-inverse;
+        text-decoration: underline;
+        text-transform: none;
       }
       .infobox-count {
         font-size: 36px;
-        color: $text-color-inverse;
+        line-height: 1;
+      }
+      .infobox-count-large {
+        font-size: 60px;
+        line-height: 1;
+      }
+      .row:last-of-type {
+        margin-top: 0.5rem;
       }
     }
   }

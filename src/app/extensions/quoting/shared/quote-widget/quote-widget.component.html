@@ -1,16 +1,20 @@
-<ish-info-box heading="account.quotes.widget.my_quotes.heading" class="infobox-wrapper" cssClass="infobox-gradient">
+<ish-info-box heading="account.quotes.widget.my_quotes.heading" class="infobox-wrapper" cssClass="infobox-widget">
   <div class="loading-container">
     <div *ngIf="!(loading$ | async); else spinner">
-      <div class="row">
-        <div class="col">
-          <div class="infobox-count" data-testing-id="responded-counter">
-            {{ respondedQuotes$ | async }}
+      <div class="row no-gutters">
+        <div class="col align-self-end">
+          <div>
+            <div class="infobox-count" data-testing-id="responded-counter">
+              {{ respondedQuotes$ | async }}
+            </div>
+            <div>
+              {{ 'account.quotes.widget.responded.label' | translate }}
+            </div>
           </div>
-          {{ 'account.quotes.widget.responded.label' | translate }}
         </div>
-        <div class="col d-flex align-items-end justify-content-end">
+        <div class="col align-self-end">
           <div class="text-right">
-            <div class="infobox-count" data-testing-id="submitted-counter">
+            <div class="infobox-count-large" data-testing-id="submitted-counter">
               {{ submittedQuoteRequests$ | async }}
             </div>
             <div>
@@ -21,7 +25,7 @@
       </div>
 
       <div class="row">
-        <div class="col my-2">
+        <div class="col">
           <a routerLink="/account/quotes" data-testing-id="quote-list-link">
             {{ 'account.quotes.widget.view_all_quotes.link' | translate }}
           </a>

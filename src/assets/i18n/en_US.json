@@ -264,7 +264,7 @@
   "account.profile.update_profile.message": "Your profile information has been updated.",
   "account.quotes.widget.my_quotes.heading": "My Quotes",
   "account.quotes.widget.responded.label": "Responded Quotes",
-  "account.quotes.widget.submitted.label": "Submitted Requests",
+  "account.quotes.widget.submitted.label": "Sent Requests",
   "account.quotes.widget.view_all_quotes.link": "View all Quotes",
   "account.register.address.headding": "Address",
   "account.register.address.message": "To save time when placing an order, please provide your primary invoice or shipping address below. We will maintain this information so you won't have to enter it again.",
