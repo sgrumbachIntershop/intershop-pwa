@@ -9,15 +9,19 @@
 
   <p>{{ 'account.overview.message.text' | translate }}</p>
 
-  <div *ngIf="isOrderApprovalEnabled$ | async">
+  <div *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
     <div class="row d-flex">
-      <div class="col-md-6"><ish-lazy-budget-widget></ish-lazy-budget-widget></div>
-      <div class="col-md-6"><ish-lazy-requisition-widget></ish-lazy-requisition-widget></div>
+      <div class="col"><ish-lazy-budget-widget></ish-lazy-budget-widget></div>
     </div>
     <div class="row d-flex">
-      <div class="col-md-6"><ish-lazy-approval-widget> </ish-lazy-approval-widget></div>
+      <div class="col" *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
+        <ish-lazy-requisition-widget></ish-lazy-requisition-widget>
+      </div>
+      <div class="col" *ngIf="'services.OrderApprovalServiceDefinition.runnable' | ishServerSetting">
+        <ish-lazy-approval-widget> </ish-lazy-approval-widget>
+      </div>
       <!-- Quote Widget - displays different quote states if quoting is enabled -->
-      <div class="col-md-6"><ish-lazy-quote-widget></ish-lazy-quote-widget></div>
+      <div class="col"><ish-lazy-quote-widget></ish-lazy-quote-widget></div>
     </div>
   </div>
 </ng-container>
